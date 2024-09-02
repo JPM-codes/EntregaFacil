@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meses - ENTREGAFÁCIL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .menu-main {
+            margin: 0 auto;
+            max-width: 1200px;
+            display: flex;
+            justify-content: flex-end; /* Alinha o menu à esquerda */
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .menu-main a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .menu-main a:hover {
+            background-color: #555;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-items li {
+            margin: 0;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 45px;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .menu-items.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .content {
+                transition: margin-top 0.3s ease-in-out;
+            }
+
+            .content.menu-active {
+                margin-top: 100px;
+            }
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .month-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .month-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 100px;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* Remove underline */
+        }
+
+        .month-button:hover {
+            background-color: #555;
+        }
+
+        .month-button a {
+            color: white;
+            text-decoration: none; /* Remove underline */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu-main">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul class="menu-items" id="menuItems">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="meses.html">Meses</a></li>
+                <li><a href="valor-anual.html">Valor Anual</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="content" id="content">
+        <h1>Selecione um Mês</h1>
+        <div class="month-buttons">
+            <a href="meses/janeiro.html" class="month-button">Janeiro</a>
+            <a href="meses/fevereiro.html" class="month-button">Fevereiro</a>
+            <a href="meses/marco.html" class="month-button">Março</a>
+            <a href="meses/abril.html" class="month-button">Abril</a>
+            <a href="meses/maio.html" class="month-button">Maio</a>
+            <a href="meses/junho.html" class="month-button">Junho</a>
+            <a href="meses/julho.html" class="month-button">Julho</a>
+            <a href="meses/agosto.html" class="month-button">Agosto</a>
+            <a href="meses/setembro.html" class="month-button">Setembro</a>
+            <a href="meses/outubro.html" class="month-button">Outubro</a>
+            <a href="meses/novembro.html" class="month-button">Novembro</a>
+            <a href="meses/dezembro.html" class="month-button">Dezembro</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menuItems = document.getElementById('menuItems');
+            var content = document.getElementById('content');
+            menuItems.classList.toggle('active');
+            content.classList.toggle('menu-active');
+        }
+    </script>
+</body>
+</html>

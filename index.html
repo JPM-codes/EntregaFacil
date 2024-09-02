@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTREGAFÁCIL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .menu-main {
+            margin: 0 auto;
+            max-width: 1200px;
+            display: flex;
+            justify-content: flex-end; /* Alinha o menu à esquerda */
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .menu-main a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .menu-main a:hover {
+            background-color: #555;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-items li {
+            margin: 0;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 45px;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .menu-items.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .content {
+                transition: margin-top 0.3s ease-in-out;
+            }
+
+            .content.menu-active {
+                margin-top: 100px;
+            }
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu-main">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul class="menu-items" id="menuItems">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="meses.html">Meses</a></li>
+                <li><a href="valor-anual.html">Valor Anual</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="content" id="content">
+        <h1>Bem-vindo ao ENTREGAFÁCIL</h1>
+        <p>O ENTREGAFÁCIL é uma plataforma intuitiva para gerenciar suas entregas e encomendas ao longo do ano. Através de uma interface simples e fácil de usar, você pode acompanhar suas entregas por mês, criar novas encomendas e visualizar o valor total acumulado ao longo do ano.</p>
+
+        <h2>Como funciona:</h2>
+        <p>O site é dividido em três seções principais:</p>
+        <ul>
+            <li><strong>Inicio:</strong> A página principal onde você pode obter uma visão geral do sistema.</li>
+            <li><strong>Meses:</strong> Navegue por esta seção para visualizar e gerenciar suas entregas de cada mês. Cada mês tem sua própria página onde as entregas criadas são listadas. Você também pode criar novas encomendas clicando no botão "Criar Encomenda".</li>
+            <li><strong>Valor Anual:</strong> Esta seção exibe o valor total das encomendas criadas ao longo do ano, somando os valores de todos os meses.</li>
+        </ul>
+
+        <h2>Começando:</h2>
+        <p>Para começar, selecione um mês na aba "Meses" e veja as entregas existentes ou adicione novas. Todas as informações são salvas localmente no seu navegador, garantindo que você tenha acesso rápido e fácil às suas entregas sempre que precisar.</p>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menuItems = document.getElementById('menuItems');
+            var content = document.getElementById('content');
+            menuItems.classList.toggle('active');
+            content.classList.toggle('menu-active');
+        }
+    </script>
+</body>
+</html>
