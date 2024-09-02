@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abril - ENTREGAFÁCIL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .menu-main {
+            margin: 0 auto;
+            max-width: 1200px;
+            display: flex;
+            justify-content: flex-end;
+            /* Alinha o menu à esquerda */
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .menu-main a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .menu-main a:hover {
+            background-color: #555;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-items.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .menu-items li {
+            margin: 0;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .menu-items.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .content {
+                transition: margin-top 0.3s ease-in-out;
+            }
+
+            .content.menu-active {
+                margin-top: 200px;
+            }
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .deliveries-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .delivery-item {
+            flex: 1 1 calc(33.333% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        .delivery-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .create-order {
+            margin-top: 20px;
+        }
+
+        .create-order form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .create-order label {
+            font-weight: bold;
+        }
+
+        .create-order input,
+        .create-order select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .create-order button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-order button:hover {
+            background-color: #555;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="menu-main">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul class="menu-items" id="menuItems">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../meses.html">Meses</a></li>
+                <li><a href="../valor-anual.html">Valor Anual</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="content" id="content">
+        <h1>Entregas de Janeiro</h1>
+
+        <div class="deliveries-list" id="deliveriesList">
+            <!-- As entregas serão adicionadas aqui pelo JavaScript -->
+        </div>
+
+        <div class="total" id="totalValue">Total do Mês: R$ 0,00</div>
+
+        <div class="create-order">
+            <h3>Criar Nova Encomenda</h3>
+            <form id="orderForm">
+                <label for="clientName">Nome do Cliente:</label>
+                <input type="text" id="clientName" name="clientName" required>
+
+                <label for="orderType">Tipo da Encomenda:</label>
+                <select id="orderType" name="orderType" required>
+                    <option value="Plugin">Plugin</option>
+                    <option value="Configuração">Configuração</option>
+                    <!-- Mais tipos podem ser adicionados aqui -->
+                </select>
+
+                <label for="orderValue">Valor da Encomenda:</label>
+                <input type="number" id="orderValue" name="orderValue" step="0.01" required>
+
+                <label for="descriptionType">Descrição da Encomenda:</label>
+                <input type="text" id="descriptionType" name="descriptionType" required>
+
+                <button type="submit">Criar Encomenda</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let totalAmount = 0;
+    
+        function updateTotal() {
+            totalAmount = 0;
+            document.querySelectorAll('.delivery-item').forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const valueText = item.querySelector('p:nth-of-type(3)').textContent;
+                const value = parseFloat(valueText.split("R$")[1]);
+                console.log(value);
+                if (checkbox.checked) {
+                    totalAmount += value;
+                }
+            });
+
+            document.getElementById('totalValue').textContent = `Total do Mês: R$ ${totalAmount.toFixed(2).replace('.', ',')}`;
+        }
+
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const deliveriesList = document.getElementById('deliveriesList');
+            const orderForm = document.getElementById('orderForm');
+    
+            function createDeliveryItem(delivery) {
+                const deliveryItem = document.createElement('div');
+                deliveryItem.className = 'delivery-item';
+                
+                const orderValueText = (typeof delivery.orderValue === 'number' && !isNaN(delivery.orderValue)) 
+                    ? delivery.orderValue.toFixed(2) 
+                    : '0.00';
+    
+                deliveryItem.innerHTML = `
+                    <input type="checkbox" ${delivery.completed ? 'checked' : ''} onclick="updateTotal()">
+                    <p><strong>Nome do Cliente:</strong> ${delivery.clientName}</p>
+                    <p><strong>Tipo da Encomenda:</strong> ${delivery.orderType}</p>
+                    <p><strong>Valor da Encomenda:</strong> R$ ${orderValueText}</p>
+                    <p><strong>Descrição da Encomenda:</strong> ${delivery.description}</p>
+                `;
+    
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'X';
+                deleteButton.className = 'delete-button'; // Adicione uma classe para estilização
+                deleteButton.onclick = function () {
+                    deleteDeliveryItem(deliveryItem);
+                };
+    
+                deliveryItem.prepend(deleteButton); // Adiciona o botão antes do conteúdo do item
+                return deliveryItem;
+            }
+    
+            function deleteDeliveryItem(item) {
+                item.remove();  // Remove o item do DOM
+                updateTotal();  // Atualiza o total
+                saveDeliveries(); // Salva as entregas após remoção
+            }
+    
+            // Função para salvar as entregas no LocalStorage
+            function saveDeliveries() {
+                const deliveries = [];
+                document.querySelectorAll('.delivery-item').forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    const clientName = item.querySelector('p:nth-of-type(1)').textContent.replace('Nome do Cliente:', '').trim();
+                    const orderType = item.querySelector('p:nth-of-type(2)').textContent.replace('Tipo da Encomenda:', '').trim();
+                    const orderValue = parseFloat(item.querySelector('p:nth-of-type(3)').textContent.split("R$")[1]);
+                    const description = item.querySelector('p:nth-of-type(4)').textContent.replace('Descrição da Encomenda:', '').trim();
+                    const completed = checkbox.checked;
+    
+                    deliveries.push({ clientName, orderType, orderValue, description, completed });
+                });
+                localStorage.setItem('deliveries-abril', JSON.stringify(deliveries));
+            }
+    
+            // Função para carregar as entregas do LocalStorage
+            function loadDeliveries() {
+                const deliveries = JSON.parse(localStorage.getItem('deliveries-abril') || '[]');
+                deliveries.forEach(delivery => {
+                    deliveriesList.appendChild(createDeliveryItem(delivery));
+                });
+                updateTotal();
+            }
+    
+            loadDeliveries();
+    
+            // Adiciona um novo item de entrega ao formulário
+            orderForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+    
+                const clientName = document.getElementById('clientName').value;
+                const orderType = document.getElementById('orderType').value;
+                const orderValue = parseFloat(document.getElementById('orderValue').value.replace(',', '.'));
+                const description = document.getElementById('descriptionType').value;
+    
+                if (!isNaN(orderValue)) {
+                    const newDelivery = { clientName, orderType, orderValue, description, completed: false };
+                    deliveriesList.appendChild(createDeliveryItem(newDelivery));
+    
+                    updateTotal();
+    
+                    saveDeliveries();
+    
+                    orderForm.reset();
+                } else {
+                    alert('Por favor, insira um valor válido para a encomenda.');
+                }
+            });
+        });
+    
+        function toggleMenu() {
+            var menuItems = document.getElementById('menuItems');
+            var content = document.getElementById('content');
+            menuItems.classList.toggle('active');
+            content.classList.toggle('menu-active');
+        }
+    </script>
+    
+
+</body>
+
+</html>

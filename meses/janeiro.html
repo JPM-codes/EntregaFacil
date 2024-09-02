@@ -310,12 +310,12 @@
     
                     deliveries.push({ clientName, orderType, orderValue, description, completed });
                 });
-                localStorage.setItem('deliveries', JSON.stringify(deliveries));
+                localStorage.setItem('deliveries-janeiro', JSON.stringify(deliveries));
             }
     
             // Função para carregar as entregas do LocalStorage
             function loadDeliveries() {
-                const deliveries = JSON.parse(localStorage.getItem('deliveries') || '[]');
+                const deliveries = JSON.parse(localStorage.getItem('deliveries-janeiro') || '[]');
                 deliveries.forEach(delivery => {
                     deliveriesList.appendChild(createDeliveryItem(delivery));
                 });
