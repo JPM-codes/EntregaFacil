@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALOR ANUAL - ENTREGAFÁCIL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .menu-main {
+            margin: 0 auto;
+            max-width: 1200px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .menu-main a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .menu-main a:hover {
+            background-color: #555;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-items.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .menu-items li {
+            margin: 0;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .menu-items.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .content {
+                transition: margin-top 0.3s ease-in-out;
+            }
+
+            .content.menu-active {
+                margin-top: 200px;
+            }
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu-main">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul class="menu-items" id="menuItems">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="meses.html">Meses</a></li>
+                <li><a href="valor-anual.html">Valor Anual</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="content" id="content">
+        <h1>Resumo de Ganhos Anuais</h1>
+        <table id="annualTable">
+            <thead>
+                <tr>
+                    <th>Mês</th>
+                    <th>Ganhos (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Janeiro</td><td>0,00</td></tr>
+                <tr><td>Fevereiro</td><td>0,00</td></tr>
+                <tr><td>Março</td><td>0,00</td></tr>
+                <tr><td>Abril</td><td>0,00</td></tr>
+                <tr><td>Maio</td><td>0,00</td></tr>
+                <tr><td>Junho</td><td>0,00</td></tr>
+                <tr><td>Julho</td><td>0,00</td></tr>
+                <tr><td>Agosto</td><td>0,00</td></tr>
+                <tr><td>Setembro</td><td>0,00</td></tr>
+                <tr><td>Outubro</td><td>0,00</td></tr>
+                <tr><td>Novembro</td><td>0,00</td></tr>
+                <tr><td>Dezembro</td><td>0,00</td></tr>
+                <tr><th>Total Anual</th><th id="totalAnnual">0,00</th></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menuItems = document.getElementById('menuItems');
+            menuItems.classList.toggle('active');
+        }
+
+        function updateAnnualTotals() {
+            const months = [
+                'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+            ];
+
+            let totalAnnual = 0;
+            const tbody = document.querySelector('#annualTable tbody');
+            const rows = tbody.querySelectorAll('tr');
+
+            months.forEach((month, index) => {
+                const deliveries = JSON.parse(localStorage.getItem(`deliveries-${month}`) || '[]');
+                const totalMonth = deliveries
+                    .filter(delivery => delivery.completed)
+                    .reduce((sum, delivery) => sum + delivery.orderValue, 0);
+
+                totalAnnual += totalMonth;
+                rows[index].children[1].textContent = totalMonth.toFixed(2).replace('.', ',');
+            });
+
+            document.getElementById('totalAnnual').textContent = totalAnnual.toFixed(2).replace('.', ',');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAnnualTotals();
+        });
+    </script>
+</body>
+</html>
