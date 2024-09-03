@@ -243,117 +243,101 @@
 
     <script>
         let totalAmount = 0;
-    
+
         function updateTotal() {
-            totalAmount = 0;
+            let totalAmount = 0;
             document.querySelectorAll('.delivery-item').forEach(item => {
                 const checkbox = item.querySelector('input[type="checkbox"]');
                 const valueText = item.querySelector('p:nth-of-type(3)').textContent;
                 const value = parseFloat(valueText.split("R$")[1]);
-                console.log(value);
                 if (checkbox.checked) {
                     totalAmount += value;
                 }
             });
-
             document.getElementById('totalValue').textContent = `Total do Mês: R$ ${totalAmount.toFixed(2).replace('.', ',')}`;
+            saveDeliveries();
         }
 
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            const deliveriesList = document.getElementById('deliveriesList');
-            const orderForm = document.getElementById('orderForm');
-    
-            function createDeliveryItem(delivery) {
-                const deliveryItem = document.createElement('div');
-                deliveryItem.className = 'delivery-item';
-                
-                const orderValueText = (typeof delivery.orderValue === 'number' && !isNaN(delivery.orderValue)) 
-                    ? delivery.orderValue.toFixed(2) 
-                    : '0.00';
-    
-                deliveryItem.innerHTML = `
-                    <input type="checkbox" ${delivery.completed ? 'checked' : ''} onclick="updateTotal()">
-                    <p><strong>Nome do Cliente:</strong> ${delivery.clientName}</p>
-                    <p><strong>Tipo da Encomenda:</strong> ${delivery.orderType}</p>
-                    <p><strong>Valor da Encomenda:</strong> R$ ${orderValueText}</p>
-                    <p><strong>Descrição da Encomenda:</strong> ${delivery.description}</p>
-                `;
-    
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'X';
-                deleteButton.className = 'delete-button'; // Adicione uma classe para estilização
-                deleteButton.onclick = function () {
-                    deleteDeliveryItem(deliveryItem);
-                };
-    
-                deliveryItem.prepend(deleteButton); // Adiciona o botão antes do conteúdo do item
-                return deliveryItem;
-            }
-    
-            function deleteDeliveryItem(item) {
-                item.remove();  // Remove o item do DOM
-                updateTotal();  // Atualiza o total
-                saveDeliveries(); // Salva as entregas após remoção
-            }
-    
-            // Função para salvar as entregas no LocalStorage
-            function saveDeliveries() {
-                const deliveries = [];
-                document.querySelectorAll('.delivery-item').forEach(item => {
-                    const checkbox = item.querySelector('input[type="checkbox"]');
-                    const clientName = item.querySelector('p:nth-of-type(1)').textContent.replace('Nome do Cliente:', '').trim();
-                    const orderType = item.querySelector('p:nth-of-type(2)').textContent.replace('Tipo da Encomenda:', '').trim();
-                    const orderValue = parseFloat(item.querySelector('p:nth-of-type(3)').textContent.split("R$")[1]);
-                    const description = item.querySelector('p:nth-of-type(4)').textContent.replace('Descrição da Encomenda:', '').trim();
-                    const completed = checkbox.checked;
-    
-                    deliveries.push({ clientName, orderType, orderValue, description, completed });
-                });
-                localStorage.setItem('deliveries-agosto', JSON.stringify(deliveries));
-            }
-    
-            // Função para carregar as entregas do LocalStorage
-            function loadDeliveries() {
-                const deliveries = JSON.parse(localStorage.getItem('deliveries-agosto') || '[]');
-                deliveries.forEach(delivery => {
-                    deliveriesList.appendChild(createDeliveryItem(delivery));
-                });
-                updateTotal();
-            }
-    
-            loadDeliveries();
-    
-            // Adiciona um novo item de entrega ao formulário
-            orderForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-    
-                const clientName = document.getElementById('clientName').value;
-                const orderType = document.getElementById('orderType').value;
-                const orderValue = parseFloat(document.getElementById('orderValue').value.replace(',', '.'));
-                const description = document.getElementById('descriptionType').value;
-    
-                if (!isNaN(orderValue)) {
-                    const newDelivery = { clientName, orderType, orderValue, description, completed: false };
-                    deliveriesList.appendChild(createDeliveryItem(newDelivery));
-    
-                    updateTotal();
-    
-                    saveDeliveries();
-    
-                    orderForm.reset();
-                } else {
-                    alert('Por favor, insira um valor válido para a encomenda.');
-                }
-            });
-        });
-    
-        function toggleMenu() {
-            var menuItems = document.getElementById('menuItems');
-            var content = document.getElementById('content');
-            menuItems.classList.toggle('active');
-            content.classList.toggle('menu-active');
+        function createDeliveryItem(delivery) {
+            const deliveryItem = document.createElement('div');
+            deliveryItem.className = 'delivery-item';
+
+            const orderValueText = (typeof delivery.orderValue === 'number' && !isNaN(delivery.orderValue))
+                ? delivery.orderValue.toFixed(2)
+                : '0.00';
+
+            deliveryItem.innerHTML = `
+            <input type="checkbox" ${delivery.completed ? 'checked' : ''} onchange="updateTotal()">
+            <p><strong>Nome do Cliente:</strong> ${delivery.clientName}</p>
+            <p><strong>Tipo da Encomenda:</strong> ${delivery.orderType}</p>
+            <p><strong>Valor da Encomenda:</strong> R$ ${orderValueText}</p>
+            <p><strong>Descrição da Encomenda:</strong> ${delivery.description}</p>
+        `;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'X';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = function () {
+                deleteDeliveryItem(deliveryItem);
+            };
+
+            deliveryItem.prepend(deleteButton);
+            return deliveryItem;
         }
+
+        function deleteDeliveryItem(item) {
+            item.remove();
+            updateTotal();
+            saveDeliveries();
+        }
+
+        function saveDeliveries() {
+            const deliveries = [];
+            document.querySelectorAll('.delivery-item').forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const clientName = item.querySelector('p:nth-of-type(1)').textContent.replace('Nome do Cliente:', '').trim();
+                const orderType = item.querySelector('p:nth-of-type(2)').textContent.replace('Tipo da Encomenda:', '').trim();
+                const orderValue = parseFloat(item.querySelector('p:nth-of-type(3)').textContent.split("R$")[1].replace(',', '.'));
+                const description = item.querySelector('p:nth-of-type(4)').textContent.replace('Descrição da Encomenda:', '').trim();
+                const completed = checkbox.checked;
+
+                deliveries.push({ clientName, orderType, orderValue, description, completed });
+            });
+            localStorage.setItem('deliveries-agosto', JSON.stringify(deliveries));
+        }
+
+        function loadDeliveries() {
+            const deliveries = JSON.parse(localStorage.getItem('deliveries-agosto') || '[]');
+            deliveries.forEach(delivery => {
+                document.getElementById('deliveriesList').appendChild(createDeliveryItem(delivery));
+            });
+            updateTotal();
+        }
+
+        loadDeliveries();
+
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const clientName = document.getElementById('clientName').value;
+            const orderType = document.getElementById('orderType').value;
+            const orderValue = parseFloat(document.getElementById('orderValue').value.replace(',', '.'));
+            const description = document.getElementById('descriptionType').value;
+
+            if (!isNaN(orderValue)) {
+                const newDelivery = { clientName, orderType, orderValue, description, completed: false };
+                document.getElementById('deliveriesList').appendChild(createDeliveryItem(newDelivery));
+
+                updateTotal();
+
+                saveDeliveries();
+
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Por favor, insira um valor válido para a encomenda.');
+            }
+        });
+
     </script>
     
 
